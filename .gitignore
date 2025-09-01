@@ -3,3 +3,4 @@ logs/
 config/
 plugins/
 desafio-lh-ed/
+__pycache__/
