@@ -4,14 +4,13 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 from pendulum import datetime
 from pathlib import Path
 
-
 AIRFLOW_HOME = Path('/opt/airflow')
 RAW_DATA_PATH = AIRFLOW_HOME / 'raw_data'
 PROCESSED_DATA_PATH = AIRFLOW_HOME / 'processed_data'
+
 TABLES_BANVIC = ["agencias", "clientes",
                  "colaboradores", "contas",
                  "propostas_credito"]
-
 
 @dag(
     dag_id='processamento_dados_banvic',
@@ -20,43 +19,63 @@ TABLES_BANVIC = ["agencias", "clientes",
     catchup=False,
     tags=['pandas', 'sql', 'etl'],
     doc_md="""
-    ### DAG de Processamento de Dados da Banvic
+   ### DAG de Processamento de Dados da Banvic
 
     Esta DAG realiza a extração e transformação de dados a partir de arquivos csv e de um banco de dados.
     """
 )
 def processamento_dados_pipeline():
-    @task(task_id="verifica_pastas_destino")
-    def garantir_pastas_de_destino():
-        (PROCESSED_DATA_PATH / 'csv').mkdir(parents=True, exist_ok=True)
-        (PROCESSED_DATA_PATH / 'sql').mkdir(parents=True, exist_ok=True)
+
+    @task(task_id="define_pastas_destino")
+    def definir_pastas_de_destino(**kwargs):
+        execution_date_str = kwargs['ds']
+        
+        base_path_for_date = PROCESSED_DATA_PATH / execution_date_str
+        csv_path = base_path_for_date / 'csv'
+        sql_path = base_path_for_date / 'sql'
+
+        csv_path.mkdir(parents=True, exist_ok=True)
+        sql_path.mkdir(parents=True, exist_ok=True)
+        
+        return {'csv_path': str(csv_path), 'sql_path': str(sql_path)}
 
     @task(task_id="processar_csv_transacoes")
-    def processar_csv_transacoes():
+    def processar_csv_transacoes(path: dict):
+       
         arquivo_origem = RAW_DATA_PATH / 'transacoes.csv'
-        arquivo_destino = PROCESSED_DATA_PATH / 'csv' / 'transacoes_processado.csv'
 
-        print(f"Lendo de: {arquivo_origem}")
+        csv_path = Path(path['csv_path'])
+        arquivo_destino = csv_path / 'transacoes.csv'
+
         df = pd.read_csv(arquivo_origem)
-        print(f"Salvando {len(df)} linhas em: {arquivo_destino}")
+        
         df.to_csv(arquivo_destino, index=False)
-        return str(arquivo_destino)
-
-    @task(task_id="processar_tabela_banvic")
-    def processar_tabela_banvic():
-        hook = PostgresHook(postgres_conn_id='banvic_source_db')
-        for tabela in TABLES_BANVIC:
-            sql_query = f"select * from {tabela};"
-            df = hook.get_pandas_df(sql=sql_query)
-            arquivo_destino = PROCESSED_DATA_PATH / 'sql'
-            df.to_csv(arquivo_destino / f"{tabela}.csv", index=False)
         
         return str(arquivo_destino)
 
-    pastas_garantidas = garantir_pastas_de_destino()
+    @task(task_id="processar_tabelas_banvic")
+    def processar_tabelas_banvic(path: dict):
+     
+        hook = PostgresHook(postgres_conn_id='banvic_source_db')
+        
+       
+        sql_path = Path(path['sql_path'])
 
-    pastas_garantidas >> [
-        processar_csv_transacoes(), processar_tabela_banvic()]
+        for tabela in TABLES_BANVIC:
+            sql_query = f"SELECT * FROM {tabela};"
+            df = hook.get_pandas_df(sql=sql_query)
+            
+            arquivo_destino = sql_path / f"{tabela}.csv"
+            df.to_csv(arquivo_destino, index=False)
+            
+        return str(sql_path)
 
+  
+    pastas_destino = definir_pastas_de_destino()
+
+    processar_csv_transacoes(path=pastas_destino)
+    processar_tabelas_banvic(path=pastas_destino)
+
+   
 
 processamento_dados_pipeline()
