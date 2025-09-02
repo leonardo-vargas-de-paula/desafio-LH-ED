@@ -47,6 +47,8 @@ services:
       retries: 5
       start_period: 5s
     restart: always
+    networks:
+      - airflow-net
 
   db:
       image: postgres:16
@@ -56,11 +58,13 @@ services:
         POSTGRES_USER: data_engineer
         POSTGRES_PASSWORD: v3rysecur&pas5w0rd
       volumes:
-        - ./dbdata:/var/lib/postgresql/data
+        - dbdata:/var/lib/postgresql/data
         - ./raw_data:/docker-entrypoint-initdb.d
       ports:
         - 55432:5432
       restart: always
+      networks:
+        - airflow-net
 
   dw_local:
     image: postgres:16
@@ -70,10 +74,12 @@ services:
       POSTGRES_USER: data_engineer
       POSTGRES_PASSWORD: v3rysecur&pas5w0rd
     volumes:
-      - ./dw_local:/var/lib/postgresql/data
+      - dw_local:/var/lib/postgresql/data
     ports:
       - 55433:5432
     restart: always
+    networks:
+      - airflow-net
 
   redis:
     image: redis:7.2-bookworm
@@ -86,6 +92,8 @@ services:
       retries: 50
       start_period: 30s
     restart: always
+    networks:
+      - airflow-net
 
   airflow-apiserver:
     <<: *airflow-common
@@ -103,6 +111,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - airflow-net
 
   airflow-scheduler:
     <<: *airflow-common
@@ -118,6 +128,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - airflow-net
 
   airflow-dag-processor:
     <<: *airflow-common
@@ -133,6 +145,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - airflow-net
 
   airflow-worker:
     <<: *airflow-common
@@ -158,7 +172,8 @@ services:
         condition: service_healthy
       airflow-init:
         condition: service_completed_successfully
-
+    networks:
+      - airflow-net
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
@@ -173,7 +188,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-
+    networks:
+      - airflow-net
   airflow-init:
     <<: *airflow-common
     entrypoint: /bin/bash
@@ -265,7 +281,8 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
       _PIP_ADDITIONAL_REQUIREMENTS: ''
     user: "0:0"
-
+    networks:
+      - airflow-net
   airflow-cli:
     <<: *airflow-common
     profiles:
@@ -279,7 +296,8 @@ services:
       - airflow
     depends_on:
       <<: *airflow-common-depends-on
-
+    networks:
+      - airflow-net
   flower:
     <<: *airflow-common
     command: celery flower
@@ -298,6 +316,13 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-
+    networks:
+      - airflow-net
 volumes:
   postgres-db-volume:
+  dw_local:
+  dbdata:
+
+networks:
+  airflow-net:
+    driver: bridge
