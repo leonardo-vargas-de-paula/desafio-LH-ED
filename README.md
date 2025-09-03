@@ -11,6 +11,8 @@
 
 [terminar depois]
 
+---
+
 # 📊 Análises Iniciais
 
 Este projeto é um desafio prático do processo seletivo para o programa **Indicium Lighthouse**
@@ -25,11 +27,42 @@ O objetivo é estabelecer um fluxo de extração de dados de um banco fiticio "B
 
 # Pré-requisitos
 
-Para o funcionamento adequado é necessário ter instalado:
+Para o funcionamento adequado é necessário ter:
 
 - **Docker**
 - **Docker Compose**
 - **\*Git (caso clone o repositório)**
+- **Acesso a internet**
+- **\*Dbeaver (opcional para ver o banco de dados)**
+
+# Diagrama do fluxo de dados
+
+<div align="start">
+          <img src="img\image1.png" width="80%"><br> </div>
+          Fonte: Autores do Desafio Indicium LH.
+
+# Lógica do fluxo de dados
+
+O fluxo é realizado através do pipeline orquestrado pelo Apache Airflow. 
+
+O processo ocorre 4:35 da manhã todos os dias através da DAG ````processamento_dados_banvic````.
+
+Os dados saem da fonte que são um arquivo CSV bruto e um banco de dados PostgreSQL disponíveis no diretorio *raw_data*. 
+
+Toda 4:35 da manhã o pipeline extrai os dados e cria um diretório novo dentro de *processed_data* contendo o dia em que a DAG rodou e divindo entre *csv* para os arquivos extraídos e *sql* para as tabelas retiradas   dobanco de dados e transformados em CSV. As pastas gerados ficam no seguinte formato:
+```
+*[ano-mês-dia] / [fonte de dados] /[nome tabela ou csv].csv*
+```
+
+# Processos da DAG
+
+ A DAG é dividida nas seguintes Tasks:
+
+ - **define_pastas_destino**:
+ - **processar_csv_transacoes**:
+ - **processar_tabelas_banvic**:
+ - **carregar_csv_dw_banvic**:
+ - **carregar_sql_dw_banvic**:
 
 # Passo-a-passo de execução
 
