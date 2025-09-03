@@ -65,18 +65,29 @@ Para o funcionamento adequado é necessário ter instalado:
        </div>
        5.3. Clique em *Add Connection*
        <div align="start">
-          <img src="img\addconnection.png" width="10%"><br>
+          <img src="img\addconnection.png" width="20%"><br>
        </div>
        5.4. No campo *Connection ID* escreva **banvic_source_db** para identificar o ID do banco de dados do Banvic.
        <div align="start">
-          <img src="img\dbbanvic1.png" width="10%"><br>
+          <img src="img\dbbanvic1.png" width="30%"><br>
        </div>
     
        5.5. Nos campos das configurações insira as seguintes credenciais:
-       
+
+       - Description: db banvic
+       - Host: db
+       - Login: data_engineer
+       - Password: v3rysecur&pas5w0rd
+       - Port: 5432
+       - Database: banvic
+
        <div align="start">
-          <img src="img\credenciaisbanvic.png" width="10%"><br>
+          <img src="img\credenciaisbanvic.png" width="30%"><br>
        </div>
+
+       Após isso clique em *save*
+
+       5.6. De forma análoga, crie a conexão com ID **banvic_dw**
 
 
 
