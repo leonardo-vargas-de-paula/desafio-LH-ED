@@ -115,9 +115,28 @@ Para o funcionamento adequado é necessário ter instalado:
           <img src="img\credenciaisbanvicdw.png" width="45%"><br>
        </div>
       
-      E por fim, clique em *save*. Dessa forma a **DAG** pode funcionar normalmente. Mas antes disso, será necessário ativar ela.
+      E por fim, clique em *save*. Dessa forma a **DAG** pode funcionar normalmente. Mas antes disso, será necessário ativá-la.
 
-   6.0.
+   6. No menu lateral, clique no botão *DAGS*:
+
+      <div align="start">
+      <img src="img\botaodags.png" width="20%"><br>
+      </div>
+
+      6.1.Realize uma busca pela DAG chamada    
+      ````processamento_dados_banvic````
+
+   7. Ao encontrar a DAG desejada, clique nela para ter um overview e verificar suas características.
+
+   [adicionar imagem overview]
+
+   8. Clique no switch para ativar a DAG
+
+   [adicionar imagem switch]
+
+   9.  Pronto! A DAG esta agendada para rodar as 4:35 da manhã. Caso deseje rodar manualmente, clique em *trigger*.
+
+   [adicionar imagem botão trigger]
 
 
 
