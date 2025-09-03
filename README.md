@@ -61,13 +61,27 @@ Para o funcionamento adequado é necessário ter instalado:
     
        5.2. Selecione a opção *Connections*
        <div align="start">
-          <img src="img\connections.png" width="30%"><br>
+          <img src="img\connections.png" width="10%"><br>
        </div>
-       5.3.
+       5.3. Clique em *Add Connection*
+       <div align="start">
+          <img src="img\addconnection.png" width="10%"><br>
+       </div>
+       5.4. No campo *Connection ID* escreva **banvic_source_db** para identificar o ID do banco de dados do Banvic.
+       <div align="start">
+          <img src="img\dbbanvic1.png" width="10%"><br>
+       </div>
     
-       5.4.
-    
-       5.5.
+       5.5. Nos campos das configurações insira as seguintes credenciais:
+       
+       <div align="start">
+          <img src="img\credenciaisbanvic.png" width="10%"><br>
+       </div>
+
+
+
+      
+
 
     
 
