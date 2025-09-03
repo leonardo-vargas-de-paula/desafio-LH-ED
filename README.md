@@ -5,6 +5,8 @@
 
 2.[Tecnologias Utilizadas](#tecnologias-utilizadas)
 
+3.[Passo-a-passo de Execução](#passo-a-passo-de-execução)
+
 
 
 [terminar depois]
@@ -55,19 +57,26 @@ Para o funcionamento adequado é necessário ter instalado:
 5.  Configure as conexões referentes ao banco de dados do Banvic e o Datawarehouse de destino dentro do webserver:
     
        5.1. Localize o botão de configurações de admin:
-        <div align="start">
+        
+       <div align="start">
           <img src="img\config.png" width="10%"><br>
        </div>
     
-       5.2. Selecione a opção *Connections*
+       5.2.Selecione a opção *Connections*
+
        <div align="start">
           <img src="img\connections.png" width="10%"><br>
        </div>
-       5.3. Clique em *Add Connection*
+       
+       5.3.Clique em *Add Connection*
+       
        <div align="start">
           <img src="img\addconnection.png" width="20%"><br>
+       
        </div>
-       5.4. No campo *Connection ID* escreva **banvic_source_db** para identificar o ID do banco de dados do Banvic.
+
+       5.4. No campo *Connection ID* escreva **banvic_source_db** para identificar o ID do banco de dados do Banvic e *connection type* igual a **Postgres**.
+                                          
        <div align="start">
           <img src="img\dbbanvic1.png" width="30%"><br>
        </div>
@@ -87,7 +96,29 @@ Para o funcionamento adequado é necessário ter instalado:
 
        Após isso clique em *save*
 
-       5.6. De forma análoga, crie a conexão com ID **banvic_dw**
+       5.6. De forma análoga, crie a conexão com ID **banvic_dw** e *connection type* igual a **Postgres**
+       
+       <div align="start">
+          <img src="img\dwbanvic1.png" width="45%"><br>
+       </div>
+
+      5.7. Nos campos das configurações insira as seguintes credenciais:
+
+       - Description: dw banvic
+       - Host: dw_local
+       - Login: data_engineer
+       - Password: v3rysecur&pas5w0rd
+       - Port: 5432
+       - Database: dw_banvic
+
+       <div align="start">
+          <img src="img\credenciaisbanvicdw.png" width="45%"><br>
+       </div>
+      
+      E por fim, clique em *save*. Dessa forma a **DAG** pode funcionar normalmente. Mas antes disso, será necessário ativar ela.
+
+   6.0.
+
 
 
 
