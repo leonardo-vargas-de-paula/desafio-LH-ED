@@ -13,7 +13,7 @@
 5. [Lógica do Fluxo de Dados](#-lógica-do-fluxo-de-dados)  
 6. [Processos da DAG](#-processos-da-dag)  
 7. [Passo-a-passo de Execução](#passo-a-passo-de-execução)  
-8. [#Conexões JDBC](#-conexões-jdbc)
+8. [Conexões JDBC](#-conexões-jdbc)
 
 
 
@@ -32,9 +32,11 @@ fictício **Banvic** (arquivos CSV e SQL) e carregar os dados em um banco
 
 # 🛠 Tecnologias Utilizadas
 
--   🌀 **Apache Airflow 3.0.6**\
--   🐍 **Python/Pandas**\
+-   🌀 **Apache Airflow 3.0.6**
+-   🐍 **Python/Pandas**
 -   🐳 **Docker & Docker Compose**
+-   🐘 **PostgreSQL**
+
 
 ------------------------------------------------------------------------
 
