@@ -135,7 +135,7 @@ A DAG é composta pelas seguintes *tasks*
 
 ## Diagrama da DAG
 <div align="start">
-      <img src="img\processamento_dados_banvic-graph(1).png" width="50%"><br>
+      <img src="img\processamento_dados_banvic-graph(1).png" width="70%"><br>
       </div>
 
 
