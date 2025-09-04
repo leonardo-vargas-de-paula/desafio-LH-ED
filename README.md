@@ -1,61 +1,55 @@
-# Orquestração de pipeline com Apache Airflow
+# 🚀 Orquestração de Pipeline com Apache Airflow
 
-## Sumário
-1.[Análises Iniciais](#-análises-iniciais)
+![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=for-the-badge&logo=Apache%20Airflow&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Postgres](https://img.shields.io/badge/Postgres-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 
-2.[Tecnologias Utilizadas](#tecnologias-utilizadas)
+## 📑 Sumário  
+1. [Análises Iniciais](#-análises-iniciais)  
+2. [Tecnologias Utilizadas](#-tecnologias-utilizadas)  
+3. [Pré-requisitos](#-pré-requisitos)  
+4. [Estrutura do Projeto](#-estrutura-do-projeto)  
+5. [Lógica do Fluxo de Dados](#-lógica-do-fluxo-de-dados)  
+6. [Processos da DAG](#-processos-da-dag)  
+7. [Passo-a-passo de Execução](#passo-a-passo-de-execução)  
 
-3.[Passo-a-passo de Execução](#passo-a-passo-de-execução)
 
 
-
-[terminar depois]
-
----
+------------------------------------------------------------------------
 
 # 📊 Análises Iniciais
 
-Este projeto é um desafio prático do processo seletivo para o programa **Indicium Lighthouse**
+Este projeto é um desafio prático do processo seletivo para o programa
+**Indicium Lighthouse**.
 
-O objetivo é estabelecer um fluxo de extração de dados de um banco fiticio "Banvic" no formato CSV e SQL e carregar os dados em um banco PostgreSQL.
+🎯 **Objetivo:** Estabelecer um fluxo de extração de dados de um banco
+fictício **Banvic** (arquivos CSV e SQL) e carregar os dados em um banco
+**PostgreSQL**, orquestrado pelo **Apache Airflow**.
 
-# Tecnologias Utilizadas
+------------------------------------------------------------------------
 
-- **Apache Airflow 3.0.6**
-- **Python/Pandas**
-- **Docker**
+# 🛠 Tecnologias Utilizadas
 
-# Pré-requisitos
+-   🌀 **Apache Airflow 3.0.6**\
+-   🐍 **Python/Pandas**\
+-   🐳 **Docker & Docker Compose**
 
-Para o funcionamento adequado é necessário ter:
+------------------------------------------------------------------------
 
-- **Docker**
-- **Docker Compose**
-- **\*Git (caso clone o repositório)**
-- **Acesso a internet**
-- **\*Dbeaver (opcional para ver o banco de dados)**
+# ⚙ Pré-requisitos
 
-# Diagrama do fluxo de dados
+Antes de rodar o projeto, é necessário ter:
 
-<div align="start">
-          <img src="img\image1.png" width="80%"><br> </div>
-          Fonte: Autores do Desafio Indicium LH.
+-   📦 **Docker**
+-   📦 **Docker Compose**
+-   🌐 **Acesso à internet**
+-   🖥️ **Git** (se optar por clonar o repositório)
+-   🛠 **DBeaver** *(opcional, apenas para visualizar o banco)*
 
-# Lógica do fluxo de dados
+------------------------------------------------------------------------
 
-O fluxo é realizado através do pipeline orquestrado pelo Apache Airflow. 
-
-O processo ocorre 4:35 da manhã todos os dias através da DAG ````processamento_dados_banvic````.
-
-Os dados saem da fonte que são um arquivo CSV bruto e um banco de dados PostgreSQL disponíveis no diretorio *raw_data*. 
-
-Toda 4:35 da manhã o pipeline extrai os dados e cria um diretório novo dentro de *processed_data* contendo o dia em que a DAG rodou e divindo entre *csv* para os arquivos extraídos e *sql* para as tabelas retiradas   dobanco de dados e transformados em CSV. As pastas  do data lake ficam no seguinte formato:
-```
-[ano-mês-dia] / [fonte de dados] /[nome tabela ou csv].csv*
-```
-
-# Diretório base do projeto
-
+# 🗂 Estrutura do Projeto
 ```
 desafio-LH-ED/
 │
@@ -69,11 +63,11 @@ desafio-LH-ED/
 │
 ├── processed_data/
 │   └── [data de execução]/
-│       ├── csv/
-│       └── sql/
+│                 ├── csv/
+│                 └── sql/
 ├── config/
 │   └── ...
-├── dbdata/    (verificar dw local)
+├── dbdata/    
 │   └── ...
 ├── logs/
 │   └── ...
@@ -92,15 +86,54 @@ desafio-LH-ED/
 
 ```
 
-# Processos da DAG
+------------------------------------------------------------------------
 
- A DAG é dividida nas seguintes Tasks:
+# 🔄 Lógica do Fluxo de Dados
 
- - **define_pastas_destino**:
- - **processar_csv_transacoes**:
- - **processar_tabelas_banvic**:
- - **carregar_csv_dw_banvic**:
- - **carregar_sql_dw_banvic**:
+O fluxo é realizado através do pipeline orquestrado pelo Apache Airflow. 
+
+O processo ocorre 4:35 da manhã todos os dias através da DAG ````processamento_dados_banvic````.
+
+Os dados saem da fonte que são um arquivo CSV bruto e um banco de dados PostgreSQL disponíveis no diretorio *raw_data*. 
+
+Toda 4:35 da manhã o pipeline extrai os dados e cria um diretório novo dentro de *processed_data* contendo o dia em que a DAG rodou e divindo entre *csv* para os arquivos extraídos e *sql* para as tabelas retiradas   dobanco de dados e transformados em CSV. As pastas  do data lake ficam no seguinte formato:
+```
+[ano-mês-dia] / [fonte de dados] /[nome tabela ou csv].csv
+```
+------------------------------------------------------------------------
+
+# 📂 Processos da DAG
+
+A DAG é composta pelas seguintes *tasks*
+<table>
+  <tr>
+    <th>Task</th>
+    <th>Descrição</th>
+  </tr>
+  <tr>
+    <td>🗂 <b>define_pastas_destino</b></td>
+    <td>Cria os diretórios de saída para os dados processados</td>
+  </tr>
+  <tr>
+    <td>📑 <b>processar_csv_transacoes</b></td>
+    <td>Processa e organiza os arquivos CSV brutos</td>
+  </tr>
+  <tr>
+    <td>🗄 <b>processar_tabelas_banvic</b></td>
+    <td>Extrai tabelas do banco Banvic e converte para CSV</td>
+  </tr>
+  <tr>
+    <td>⬆ <b>carregar_csv_dw_banvic</b></td>
+    <td>Carrega dados CSV no Data Warehouse</td>
+  </tr>
+  <tr>
+    <td>⬆ <b>carregar_sql_dw_banvic</b></td>
+    <td>Carrega dados SQL no Data Warehouse</td>
+  </tr>
+</table>
+
+
+# ▶ Passo-a-passo de Execução
 
 # Passo-a-passo de execução
 
@@ -154,12 +187,15 @@ desafio-LH-ED/
     
        5.5. Nos campos das configurações insira as seguintes credenciais:
 
-       - Description: db banvic
-       - Host: db
-       - Login: data_engineer
-       - Password: v3rysecur&pas5w0rd
-       - Port: 5432
-       - Database: banvic
+      <table> 
+      <tr> <th>Campo</th> <th>Valor</th> </tr> 
+      <tr> <td>Description</td> <td>db banvic</td> </tr> 
+      <tr> <td>Host</td> <td>db</td> </tr> 
+      <tr> <td>Login</td> <td>data_engineer</td> </tr> 
+      <tr> <td>Password</td> <td>v3rysecur&pas5w0rd</td> </tr> 
+      <tr> <td>Port</td> <td>5432</td> </tr> <tr> <td>Database</td> 
+      <td>banvic</td> </tr> 
+      </table>   
 
        <div align="start">
           <img src="img\credenciaisbanvic.png" width="30%"><br>
@@ -175,12 +211,14 @@ desafio-LH-ED/
 
       5.7. Nos campos das configurações insira as seguintes credenciais:
 
-       - Description: dw banvic
-       - Host: dw_local
-       - Login: data_engineer
-       - Password: v3rysecur&pas5w0rd
-       - Port: 5432
-       - Database: dw_banvic
+       <table> <tr> <th>Campo</th> <th>Valor</th> </tr> 
+       <tr> <td>Description</td> 
+       <td>dw banvic</td> </tr> <tr> <td>Host</td> <td>dw_local</td> 
+       </tr> <tr> <td>Login</td> <td>data_engineer</td> </tr> 
+       <tr> <td>Password</td> <td>v3rysecur&pas5w0rd</td> </tr> 
+       <tr> <td>Port</td> <td>5432</td> </tr> 
+       <tr> <td>Database</td> <td>dw_banvic</td> </tr> 
+       </table>
 
        <div align="start">
           <img src="img\credenciaisbanvicdw.png" width="45%"><br>
@@ -208,12 +246,3 @@ desafio-LH-ED/
    9.  Pronto! A DAG esta agendada para rodar as 4:35 da manhã. Caso deseje rodar manualmente, clique em *trigger*.
 
    [adicionar imagem botão trigger]
-
-
-
-
-      
-
-
-    
-
