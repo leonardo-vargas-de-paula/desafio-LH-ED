@@ -49,9 +49,47 @@ O processo ocorre 4:35 da manhã todos os dias através da DAG ````processamento
 
 Os dados saem da fonte que são um arquivo CSV bruto e um banco de dados PostgreSQL disponíveis no diretorio *raw_data*. 
 
-Toda 4:35 da manhã o pipeline extrai os dados e cria um diretório novo dentro de *processed_data* contendo o dia em que a DAG rodou e divindo entre *csv* para os arquivos extraídos e *sql* para as tabelas retiradas   dobanco de dados e transformados em CSV. As pastas gerados ficam no seguinte formato:
+Toda 4:35 da manhã o pipeline extrai os dados e cria um diretório novo dentro de *processed_data* contendo o dia em que a DAG rodou e divindo entre *csv* para os arquivos extraídos e *sql* para as tabelas retiradas   dobanco de dados e transformados em CSV. As pastas  do data lake ficam no seguinte formato:
 ```
-*[ano-mês-dia] / [fonte de dados] /[nome tabela ou csv].csv*
+[ano-mês-dia] / [fonte de dados] /[nome tabela ou csv].csv*
+```
+
+# Diretório base do projeto
+
+```
+desafio-LH-ED/
+│
+├── dags/
+│   ├── processamento_dados_banvic.py
+|   └── ...
+│
+├── raw_data/
+│   ├── transacoes.csv
+│   └── banvic.sql
+│
+├── processed_data/
+│   └── [data de execução]/
+│       ├── csv/
+│       └── sql/
+├── config/
+│   └── ...
+├── dbdata/    (verificar dw local)
+│   └── ...
+├── logs/
+│   └── ...
+├── plugins/
+│   └── ...
+├── img/
+│   └── ...
+│
+├── docker-compose.yaml
+├── .env
+├── .gitignore
+├── README.md
+├── LICENSE
+
+
+
 ```
 
 # Processos da DAG
