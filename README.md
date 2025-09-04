@@ -13,6 +13,7 @@
 5. [Lógica do Fluxo de Dados](#-lógica-do-fluxo-de-dados)  
 6. [Processos da DAG](#-processos-da-dag)  
 7. [Passo-a-passo de Execução](#passo-a-passo-de-execução)  
+8. [#Conexões JDBC](#-conexões-jdbc)
 
 
 
@@ -132,6 +133,11 @@ A DAG é composta pelas seguintes *tasks*
   </tr>
 </table>
 
+## Diagrama da DAG
+<div align="start">
+      <img src="img\processamento_dados_banvic-graph(1).png" width="50%"><br>
+      </div>
+
 
 # ▶ Passo-a-passo de Execução
 
@@ -182,7 +188,7 @@ A DAG é composta pelas seguintes *tasks*
        5.4. No campo *Connection ID* escreva **banvic_source_db** para identificar o ID do banco de dados do Banvic e *connection type* igual a **Postgres**.
                                           
        <div align="start">
-          <img src="img\dbbanvic1.png" width="30%"><br>
+          <img src="img\dbbanvic1.png" width="40%"><br>
        </div>
     
        5.5. Nos campos das configurações insira as seguintes credenciais:
@@ -228,21 +234,42 @@ A DAG é composta pelas seguintes *tasks*
 
    6. No menu lateral, clique no botão *DAGS*:
 
-      <div align="start">
-      <img src="img\botaodags.png" width="20%"><br>
-      </div>
+      
 
       6.1.Realize uma busca pela DAG chamada    
       ````processamento_dados_banvic````
 
    7. Ao encontrar a DAG desejada, clique nela para ter um overview e verificar suas características.
 
-   [adicionar imagem overview]
+      7.1. Clique no switch para ativar a DAG
 
-   8. Clique no switch para ativar a DAG
+      <div align="start">
+         <img src="img\switch.png" width="40%"><br>
+         </div>
 
-   [adicionar imagem switch]
+   8.  Pronto! A DAG esta agendada para rodar as 4:35 da manhã. Caso deseje rodar manualmente, clique em *trigger*.
 
-   9.  Pronto! A DAG esta agendada para rodar as 4:35 da manhã. Caso deseje rodar manualmente, clique em *trigger*.
+   <div align="start">
+      <img src="img\trigger.png" width="30%"><br>
+      </div>
+   
+   # 🔗 Conexões JDBC
 
-   [adicionar imagem botão trigger]
+   As seguintes URLs podem ser utilizadas para acessar o banco de dados do Banvic e do datawarehouse
+
+
+   <table>
+   <tr>
+      <th>Banco</th>
+      <th>URL JDBC</th>
+   </tr>
+   <tr>
+      <td>Banvic (db)</td>
+      <td><code>jdbc:postgresql://localhost:55432/banvic</code></td>
+   </tr>
+   <tr>
+      <td>DW Banvic (dw)</td>
+      <td><code>jdbc:postgresql://localhost:55433/dw_banvic</code></td>
+   </tr>
+   </table>
+
