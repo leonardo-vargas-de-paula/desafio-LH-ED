@@ -15,7 +15,7 @@ TABLES_BANVIC = ["agencias", "clientes",
 
 @dag(
     dag_id='processamento_dados_banvic',
-    start_date=datetime(2025, 9, 1),
+    start_date=datetime(2025, 9, 1, tz="America/Sao_Paulo"),
     schedule="35 4 * * *",
     catchup=False,
     tags=['pandas', 'sql', 'etl'],
